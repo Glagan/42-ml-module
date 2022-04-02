@@ -22,7 +22,7 @@ class Matrix:
                     for value in col:
                         if type(value) is not float:
                             raise TypeError(
-                                'Each values in the matrix must be a float.')
+                                'Each values in a matrix must be a float.')
                         self.data[-1].append(value)
             elif isinstance(initializer, tuple):
                 if len(initializer) != 2 or not type(initializer[0]) is int or not type(initializer[1]) is int:
@@ -57,7 +57,7 @@ class Matrix:
                 for value in col:
                     if type(value) is not float:
                         raise TypeError(
-                            'Each values in the matrix must be a float.')
+                            'Each values in a matrix must be a float.')
                     self.data[-1].append(value)
 
     def T(self):
@@ -83,64 +83,67 @@ class Matrix:
         if type(b) is int or type(b) is float:
             result = []
             for row in self.data:
-                result.append(list(col + b for col in row))
+                result.append([col + b for col in row])
+            if isinstance(self, Vector):
+                return Vector(result[0], self.shape)
             return Matrix(result, self.shape)
         elif isinstance(b, Matrix):
             if self.shape != b.shape:
-                raise TypeError('You can only add Matrices of the same size.')
+                raise TypeError('You can only add {} of the same size.'.format(
+                    self.__class__.__name__))
             result = []
             for row in range(self.shape[0]):
-                result.append(
-                    list(self.data[row][col] + b.data[row][col] for col in range(self.shape[1])))
+                result.append([self.data[row][col] + b.data[row][col]
+                              for col in range(self.shape[1])])
+            if isinstance(self, Vector) and isinstance(b, Vector):
+                return Vector(result[0])
             return Matrix(result, self.shape)
         return NotImplemented
 
     def __radd__(self, b):
-        """
-        TODO Vector return Vector
-        """
         return self.__add__(b)
 
     def __sub__(self, b):
         if type(b) is int or type(b) is float:
             result = []
             for row in self.data:
-                result.append(list(col - b for col in row))
+                result.append([col - b for col in row])
+            if isinstance(self, Vector):
+                return Vector(result[0], self.shape)
             return Matrix(result, self.shape)
         elif isinstance(b, Matrix):
             if self.shape != b.shape:
                 raise TypeError(
-                    'You can only substract Matrices of the same size.')
+                    'You can only substract a {} of the same size.'.format(self.__class__.__name__))
             result = []
             for row in range(self.shape[0]):
-                result.append(
-                    list(self.data[row][col] + b.data[row][col] for col in range(self.shape[1])))
+                result.append([self.data[row][col] - b.data[row][col]
+                              for col in range(self.shape[1])])
+            if isinstance(self, Vector) and isinstance(b, Vector):
+                return Vector(result[0])
             return Matrix(result, self.shape)
         return NotImplemented
 
     def __rsub__(self, b):
-        """
-        TODO Vector return Vector
-        """
         return self.__sub__(b)
 
     def __truediv__(self, b):
         if type(b) is int or type(b) is float:
             if int(b) == 0:
-                raise ZeroDivisionError("You can't divide a Matrix by 0 !")
+                raise ZeroDivisionError(
+                    "You can't divide a {} by 0 !".format(self.__class__.__name__))
             result = []
             for row in self.data:
-                result.append(list(col / b for col in row))
-            return type(self)(result, self.shape)
+                result.append([col / b for col in row])
+            if isinstance(self, Vector):
+                return Vector(result[0], self.shape)
+            return Matrix(result, self.shape)
         return NotImplemented
 
     def __rtruediv__(self, b):
         return NotImplemented
 
     def __mul__(self, b):
-        """
-        TODO Vector return Vector
-        """
         if isinstance(b, Matrix):
             # m*n n*1 -> m*1
             if self.shape[1] == b.shape[0] and b.shape[1] == 1:
@@ -165,15 +168,17 @@ class Matrix:
                                 self.data[row][j] * b.data[j][index])
                         current_row.append(row_result)
                     result.append(current_row)
-                if isinstance(self, Vector) or isinstance(b, Vector):
-                    return Vector(result)
+                if isinstance(self, Vector) and isinstance(b, Vector):
+                    return Vector(result[0])
                 return Matrix(result, (self.shape[0], b.shape[1]))
             raise TypeError(
-                "You can only multiply a Matrix with the same shape or a vector that match the rows.")
+                "You can only multiply a {} with the same shape or a {} that match the rows.".format(self.__class__.__name__, self.__class__.__name__))
         elif type(b) is int or type(b) is float:
             result = []
             for row in self.data:
-                result.append(list(col * b for col in row))
+                result.append([col * b for col in row])
+            if isinstance(self, Vector):
+                return Vector(result[0], self.shape)
             return Matrix(result, self.shape)
         return NotImplemented
 
