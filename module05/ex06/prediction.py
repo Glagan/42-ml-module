@@ -15,7 +15,7 @@ def predict_(x: np.ndarray, theta: np.ndarray):
     """
     if not isinstance(x, np.ndarray) or len(x.shape) != 2 or x.shape[0] < 1:
         return None
-    if not isinstance(theta, np.ndarray) or theta.shape != (x.shape[1] + 1, 1):
+    if not isinstance(theta, np.ndarray) or theta.shape != (2, 1):
         return None
     with_intercept = np.hstack((np.ones((x.shape[0], 1)), x))
     return np.dot(with_intercept, theta)

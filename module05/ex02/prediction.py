@@ -17,7 +17,7 @@ def simple_predict(x: np.ndarray, theta: np.ndarray) -> np.ndarray:
     """
     if not isinstance(x, np.ndarray) or len(x.shape) != 2 or x.shape[0] < 1:
         return None
-    if not isinstance(theta, np.ndarray) or theta.shape != (x.shape[1] + 1, 1):
+    if not isinstance(theta, np.ndarray) or theta.shape != (2, 1):
         return None
     result = []
     for v in x:

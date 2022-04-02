@@ -16,9 +16,9 @@ def plot(x: np.ndarray, y: np.ndarray, theta: np.ndarray):
     """
     if not isinstance(x, np.ndarray) or len(x.shape) != 2 or x.shape[0] < 1:
         return None
-    if not isinstance(y, np.ndarray) or len(y.shape) < 1 or y.shape[0] != x.shape[0]:
+    if not isinstance(y, np.ndarray) or len(y.shape) < 1 or y.shape != x.shape:
         return None
-    if not isinstance(theta, np.ndarray) or len(theta.shape) != 2 or theta.shape != (2, 1):
+    if not isinstance(theta, np.ndarray) or theta.shape != (2, 1):
         return None
     xMin, xMax = min(x), max(x)
     plt.scatter(x, y, color='blue')
