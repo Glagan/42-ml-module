@@ -13,9 +13,9 @@ def predict_(x: np.ndarray, theta: np.ndarray):
     Raises:
         This function should not raise any Exceptions.
     """
-    if not isinstance(x, np.ndarray) or len(x.shape) != 1 or x.shape[0] < 1:
+    if not isinstance(x, np.ndarray) or len(x.shape) != 2 or x.shape[0] < 1:
         return None
-    if not isinstance(theta, np.ndarray) or theta.shape != (2,):
+    if not isinstance(theta, np.ndarray) or theta.shape != (x.shape[1] + 1, 1):
         return None
-    col = np.ones((x.shape[0],))
-    return np.dot(np.c_[col, x], theta)
+    with_intercept = np.hstack((np.ones((x.shape[0], 1)), x))
+    return np.dot(with_intercept, theta)

@@ -2,7 +2,7 @@ import numpy as np
 import math
 
 
-def mse_(y, y_hat):
+def mse_(y: np.ndarray, y_hat: np.ndarray) -> float:
     """
     Description:
         Calculate the MSE between the predicted output and the real output.
@@ -15,15 +15,17 @@ def mse_(y, y_hat):
     Raises:
         This function should not raise any Exceptions.
     """
-    if not isinstance(y, np.ndarray) or (len(y.shape) != 1 and y.shape[1] != 1) or y.shape[0] < 1:
+    if not isinstance(y, np.ndarray):
         return None
-    if not isinstance(y_hat, np.ndarray) or y.shape != y_hat.shape:
+    if not isinstance(y_hat, np.ndarray):
+        return None
+    if len(y.shape) != 2 or y.shape[0] < 1 or y.shape != y_hat.shape:
         return None
     m = y.shape[0]
-    return (1 / m) * ((y_hat - y).dot(y_hat - y))
+    return (1 / m) * np.sum(np.square(y_hat - y))
 
 
-def rmse_(y, y_hat):
+def rmse_(y: np.ndarray, y_hat: np.ndarray) -> float:
     """
     Description:
         Calculate the RMSE between the predicted output and the real output.
@@ -36,15 +38,17 @@ def rmse_(y, y_hat):
     Raises:
         This function should not raise any Exceptions.
     """
-    if not isinstance(y, np.ndarray) or (len(y.shape) != 1 and y.shape[1] != 1) or y.shape[0] < 1:
+    if not isinstance(y, np.ndarray):
         return None
-    if not isinstance(y_hat, np.ndarray) or y.shape != y_hat.shape:
+    if not isinstance(y_hat, np.ndarray):
+        return None
+    if len(y.shape) != 2 or y.shape[0] < 1 or y.shape != y_hat.shape:
         return None
     m = y.shape[0]
-    return math.sqrt((1 / m) * ((y_hat - y).dot(y_hat - y)))
+    return math.sqrt((1 / m) * np.sum(np.square(y_hat - y)))
 
 
-def mae_(y, y_hat):
+def mae_(y: np.ndarray, y_hat: np.ndarray) -> float:
     """
     Description:
         Calculate the MAE between the predicted output and the real output.
@@ -57,15 +61,17 @@ def mae_(y, y_hat):
     Raises:
         This function should not raise any Exceptions.
     """
-    if not isinstance(y, np.ndarray) or (len(y.shape) != 1 and y.shape[1] != 1) or y.shape[0] < 1:
+    if not isinstance(y, np.ndarray):
         return None
-    if not isinstance(y_hat, np.ndarray) or y.shape != y_hat.shape:
+    if not isinstance(y_hat, np.ndarray):
+        return None
+    if len(y.shape) != 2 or y.shape[0] < 1 or y.shape != y_hat.shape:
         return None
     m = y.shape[0]
     return (1 / m) * np.sum(np.abs(y_hat - y))
 
 
-def r2score_(y, y_hat):
+def r2score_(y: np.ndarray, y_hat: np.ndarray) -> float:
     """
     Description:
         Calculate the R2score between the predicted output and the output.
@@ -78,9 +84,11 @@ def r2score_(y, y_hat):
     Raises:
         This function should not raise any Exceptions.
     """
-    if not isinstance(y, np.ndarray) or (len(y.shape) != 1 and y.shape[1] != 1) or y.shape[0] < 1:
+    if not isinstance(y, np.ndarray):
         return None
-    if not isinstance(y_hat, np.ndarray) or y.shape != y_hat.shape:
+    if not isinstance(y_hat, np.ndarray):
+        return None
+    if len(y.shape) != 2 or y.shape[0] < 1 or y.shape != y_hat.shape:
         return None
     m = y.shape[0]
-    return 1 - (np.sum((y_hat - y).dot(y_hat - y)) / np.sum((y - y.mean()).dot(y - y.mean())))
+    return 1 - (np.sum(np.square(y_hat - y)) / np.sum(np.square(y - y.mean())))

@@ -1,5 +1,0 @@
-1. We add a column of 1 to the left of the x vector to have the correct matrix dimension to do a multiplication with the theta vector, and it's filled with 1 so it ignores theta0.
-2. The distance between data points is squared so it ignores negative and positive values order.
-3. The cost function output represent the squared distance between the predicted result and the real result.
-4. We want the cost function output to reach 0, which would mean that all of the predicitions match perfectly the real result.
-5. Matrix multiplication are not commutative because the dimensions of the matrices could not be valid when their position in the multiplication are reversed.
