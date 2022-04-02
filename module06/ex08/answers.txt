@@ -1,6 +1,0 @@
-1. The hypothesis is the prediction of a given value according to some parameters. It's goal is to predict a value.
-2. The cost function represent the cost of a given prediction and it's real value.
-3. Linear Gradient Descent is an iterative algorithm to calculate the global minimum of a given function using it's derivative.
-4. A learning rate too large could make the Gradient Descent never converge or even increase over time since it would take steps too big.
-5. A small learning could make the convergence really slow.
-6. MSE is Mean Squared Error, it's the distance between a prediction and it's real value, used as the cost function.
