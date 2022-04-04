@@ -12,7 +12,7 @@ Questions answers:
 > Linear Gradient Descent is an iterative algorithm to calculate the global minimum of a given function (J) using it's derivative, according to some parameters (theta).  
 > Since there is multiple thetas, the derivative for each parameters are all stored in a vector (as big as the amount of parameters) which is called the gradient.
 
-> **hat happens if you choose a learning rate that is too large ?**  
+> **What happens if you choose a learning rate that is too large ?**  
 > A learning rate too large could make the Gradient Descent never converge or even increase over time since it would take steps too big.
 
 > **What happens if you choose a very small learning rate, but still a sufficient number of cycles ?**  
