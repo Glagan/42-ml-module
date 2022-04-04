@@ -1,21 +1,28 @@
 import math
+import numpy as np
 
 
 class TinyStatistician:
     def __init__(self):
         pass
 
-    def mean(self, x: list) -> float:
+    def mean(self, x) -> float:
+        if isinstance(x, np.ndarray):
+            x = x.flatten().tolist()
         if not isinstance(x, list) or len(x) == 0:
             return None
         return sum(x) / len(x)
 
     def median(self, x: list) -> float:
+        if isinstance(x, np.ndarray):
+            x = x.flatten().tolist()
         if not isinstance(x, list) or len(x) == 0:
             return None
         return self.linear_percentile(x, 50)
 
     def quartile(self, x: list) -> float:
+        if isinstance(x, np.ndarray):
+            x = x.flatten().tolist()
         if not isinstance(x, list) or len(x) == 0:
             return None
         first = self.linear_percentile(x, 25)
@@ -52,6 +59,8 @@ class TinyStatistician:
         Return the closest x% element of the list
         Each elements in the list takes (100% / length) of space.
         """
+        if isinstance(lst, np.ndarray):
+            lst = lst.flatten().tolist()
         if not isinstance(lst, list) or len(lst) == 0:
             return None
         if not isinstance(percentile, int):
@@ -65,12 +74,16 @@ class TinyStatistician:
         return lst[value]
 
     def var(self, x: list) -> float:
+        if isinstance(x, np.ndarray):
+            x = x.flatten().tolist()
         if not isinstance(x, list) or len(x) == 0:
             return None
         mean = self.mean(x)
         return sum((row - mean) ** 2 for row in x) / len(x)
 
     def std(self, x: list) -> float:
+        if isinstance(x, np.ndarray):
+            x = x.flatten().tolist()
         if not isinstance(x, list) or len(x) == 0:
             return None
         return math.sqrt(self.var(x))
