@@ -1,9 +1,9 @@
 import numpy as np
 
 
-def minmax(x: np.ndarray) -> np.ndarray:
+def zscore(x: np.ndarray) -> np.ndarray:
     """
-    Computes the normalized version of a non-empty numpy.array using the min-max standardization.
+    Computes the normalized version of a non-empty numpy.array using the z-score standardization.
     Args:
         x: has to be an numpy.array, a vector.
     Return:
@@ -17,6 +17,4 @@ def minmax(x: np.ndarray) -> np.ndarray:
         return None
     if len(x.shape) != 2 or x.shape[0] < 1 or x.shape[1] != 1:
         return None
-    x_min = x.min()
-    x_max = x.max()
-    return ((x - x_min) / (x_max - x_min)).reshape((-1, x.shape[0]))
+    return ((x - x.mean()) / x.std()).reshape((-1, x.shape[0]))
