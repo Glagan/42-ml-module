@@ -56,13 +56,10 @@ class MyLinearRegression:
             This function should not raise any Exception.
         """
         if not isinstance(x, np.ndarray) or not isinstance(y, np.ndarray):
-            print("huh1")
             return None
         if len(x.shape) < 2 or x.shape[0] < 1 or x.shape[1] < 1:
-            print("huh2")
             return None
         if len(y.shape) != 2 or y.shape[0] != x.shape[0] or y.shape[1] != 1:
-            print("huh3")
             return None
         if x.shape[1] + 1 != self.theta.shape[0]:
             print(x.shape[1], self.theta.shape[0])
@@ -102,6 +99,10 @@ class MyLinearRegression:
         """
         if not isinstance(y, np.ndarray) or not isinstance(y_hat, np.ndarray):
             return None
+        if len(y.shape) < 2 or y.shape[0] < 1 or y.shape[1] != 1:
+            return None
+        if y.shape != y_hat.shape:
+            return None
         return np.square(y_hat - y)
 
     def loss_(self, y: np.ndarray, y_hat: np.ndarray) -> float:
@@ -119,10 +120,10 @@ class MyLinearRegression:
         Raises:
             This function should not raise any Exception.
         """
-        if not isinstance(y, np.ndarray):
+        if not isinstance(y, np.ndarray) or not isinstance(y_hat, np.ndarray):
             return None
-        if not isinstance(y_hat, np.ndarray):
+        if len(y.shape) < 2 or y.shape[0] < 1 or y.shape[1] != 1:
             return None
-        if len(y.shape) < 2 or y.shape[0] < 1 or y.shape != y_hat.shape:
+        if y.shape != y_hat.shape:
             return None
         return (1 / (2 * y.shape[0])) * np.sum(np.square(y_hat - y))
