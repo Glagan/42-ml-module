@@ -54,10 +54,10 @@ class TinyStatistician:
         frac = x - x_floor
         return in_serie + frac * (next_in_serie - in_serie)
 
-    def percentile(self, lst: list, percentile: int) -> float:
+    def closest_percentile(self, lst: list, percentile: int) -> float:
         """
-        Return the closest x% element of the list
-        Each elements in the list takes (100% / length) of space.
+        Closest ranks *without* linear interpolation (C = 1/2)
+        https://en.wikipedia.org/wiki/Percentile
         """
         if isinstance(lst, np.ndarray):
             lst = lst.flatten().tolist()
@@ -69,9 +69,12 @@ class TinyStatistician:
             return None
         lst = sorted(lst)
         count = len(lst)
-        x = math.floor((percentile / 100) * count)
+        x = math.floor(((percentile / 100) * count) - 0.5)
         value = x if x >= 0 else 0
         return lst[value]
+
+    def percentile(self, lst: list, percentile: int) -> float:
+        return self.linear_percentile(lst, percentile)
 
     def var(self, x: list) -> float:
         if isinstance(x, np.ndarray):
