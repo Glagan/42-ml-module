@@ -90,5 +90,4 @@ def r2score_(y: np.ndarray, y_hat: np.ndarray) -> float:
         return None
     if len(y.shape) != 2 or y.shape[0] < 1 or y.shape != y_hat.shape:
         return None
-    m = y.shape[0]
     return 1 - (np.sum(np.square(y_hat - y)) / np.sum(np.square(y - y.mean())))
