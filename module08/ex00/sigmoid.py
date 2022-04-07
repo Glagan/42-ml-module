@@ -16,4 +16,6 @@ def sigmoid_(x: np.ndarray) -> np.ndarray:
         return None
     if x.shape == ():
         x = np.array([[x]])
+    if len(x.shape) != 2 or x.shape[0] < 1 or x.shape[1] < 1:
+        return None
     return 1 / (1 + np.exp(-x))
