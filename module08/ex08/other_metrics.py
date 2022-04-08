@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def confusion_matrix_(y: np.ndarray, y_hat: np.ndarray, pos_label=1):
+def confusion_matrix_(y: np.ndarray, y_hat: np.ndarray, pos_label=1) -> list:
     """
     Compute a confusion matrix [TP, TN, FP, FN] from 2 numpy.ndarray
     Args:
@@ -31,7 +31,7 @@ def confusion_matrix_(y: np.ndarray, y_hat: np.ndarray, pos_label=1):
     ]
 
 
-def accuracy_score_(y: np.ndarray, y_hat: np.ndarray):
+def accuracy_score_(y: np.ndarray, y_hat: np.ndarray) -> float:
     """
     Compute the accuracy score.
     Reference:
@@ -54,7 +54,7 @@ def accuracy_score_(y: np.ndarray, y_hat: np.ndarray):
     return np.sum(y == y_hat) / y.shape[0]
 
 
-def precision_score_(y: np.ndarray, y_hat: np.ndarray, pos_label=1):
+def precision_score_(y: np.ndarray, y_hat: np.ndarray, pos_label=1) -> float:
     """
     Compute the precision score.
     Args:
@@ -81,7 +81,7 @@ def precision_score_(y: np.ndarray, y_hat: np.ndarray, pos_label=1):
     return (tp) / (tp + fp)
 
 
-def recall_score_(y: np.ndarray, y_hat: np.ndarray, pos_label=1):
+def recall_score_(y: np.ndarray, y_hat: np.ndarray, pos_label=1) -> float:
     """
     Compute the recall score.
     Args:
@@ -108,7 +108,7 @@ def recall_score_(y: np.ndarray, y_hat: np.ndarray, pos_label=1):
     return (tp) / (tp + fn)
 
 
-def f1_score_(y: np.ndarray, y_hat: np.ndarray, pos_label=1):
+def f1_score_(y: np.ndarray, y_hat: np.ndarray, pos_label=1) -> float:
     """
     Compute the f1 score.
     Args:
