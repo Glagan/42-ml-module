@@ -1,4 +1,5 @@
 from argparse import ArgumentParser
+from itertools import combinations
 from matplotlib import pyplot as plt
 import numpy as np
 import pandas as pd
@@ -26,7 +27,7 @@ if __name__ == '__main__':
 
     # Train models
     models = []
-    for i in range(4): 
+    for i in range(4):
         model_yTrain = np.where(yTrain == i, 1, 0)
         model = MyLR([[1.], [1.], [1.], [1.]], alpha=0.0005, max_iter=200000)
         print(f"Trained model for {i}:\n{model.fit_(xTrain, model_yTrain)}")
@@ -52,13 +53,17 @@ if __name__ == '__main__':
     correct_predictions = np.sum(predictions == y)
     print(f"[Overall] Correct predicted values: {correct_predictions} / {y.shape[0]} ({(correct_predictions / y.shape[0]) * 100:.2f}%)")
 
-    # Show one scatter plot for each of X = features and Y = prediction
-    # TODO fix plot
+    # Show one scatter plot for each of X, Y = features and color = prediction
+    features_pair = combinations(features, 2)
     fig, dim_axs = plt.subplots(ncols=3)
+    cmap = plt.cm.get_cmap('jet', 5)
+    planets = ["The flying cities of Venus", "United Nations of Earth", "Mars Republic", "The Asteroids' Belt colonies"]
     axs = dim_axs.flatten()
-    for i, feature in enumerate(features):
-        axs[i].scatter(x_df[feature], y, color="purple")
-        axs[i].scatter(x_df[feature], predictions, color="pink", alpha=0.5)
-        axs[i].set_xlabel(f"{feature}")
-        axs[i].set_ylabel(f"Prediction (1 = zipcode)")
+    for i, (feature1, feature2) in enumerate(features_pair):
+        # Scatter each planets with it's own color
+        for p in range(4):
+            axs[i].scatter(x_df[feature1].loc[(predictions == p)], x_df[feature2].loc[(predictions == p)], color=cmap(p), label=f"{planets[p]}")
+        axs[i].set_xlabel(f"{feature1}")
+        axs[i].set_ylabel(f"{feature2}")
+    plt.legend()
     plt.show()
