@@ -37,7 +37,7 @@ class MyLinearRegression:
             return None
         if x.shape[1] != self.theta.shape[0] and x.shape[1] + 1 != self.theta.shape[0]:
             return None
-        m1 = 1 / x.shape[0]
+        m1 = 1 / (2 * x.shape[0])
         if x.shape[1] != self.theta.shape[0]:
             x = np.hstack((np.ones((x.shape[0], 1)), x))
         return m1 * x.T.dot(x.dot(self.theta) - y)
@@ -62,7 +62,6 @@ class MyLinearRegression:
         if len(y.shape) != 2 or y.shape[0] != x.shape[0] or y.shape[1] != 1:
             return None
         if x.shape[1] + 1 != self.theta.shape[0]:
-            print(x.shape[1], self.theta.shape[0])
             return None
         x_int = np.hstack((np.ones((x.shape[0], 1)), x))
         for _ in range(self.max_iter):
@@ -88,7 +87,7 @@ class MyLinearRegression:
 
     def loss_elem_(self, y: np.ndarray, y_hat: np.ndarray) -> np.ndarray:
         """ 
-        Calculates all the elements (1 / (2 * M)) * (y - x)^2 of the loss function.
+        Calculates all the elements (y - x)^2.
         Args:
             x: has to be an numpy.ndarray, a vector.
             y: has to be an numpy.ndarray, a vector.
