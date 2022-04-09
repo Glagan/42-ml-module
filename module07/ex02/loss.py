@@ -22,4 +22,4 @@ def loss_(y: np.ndarray, y_hat: np.ndarray) -> float:
         return None
     if len(y.shape) < 2 or y.shape[0] < 1 or y.shape != y_hat.shape:
         return None
-    return (1 / (2 * y.shape[0])) * np.sum(np.square(y_hat - y))
+    return float(((1 / (2 * y.shape[0])) * (y_hat - y).T.dot(y_hat - y)).item())
