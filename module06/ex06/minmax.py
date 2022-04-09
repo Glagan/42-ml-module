@@ -15,8 +15,8 @@ def minmax(x: np.ndarray) -> np.ndarray:
     """
     if not isinstance(x, np.ndarray):
         return None
-    if len(x.shape) != 2 or x.shape[0] < 1 or x.shape[1] != 1:
+    if len(x.shape) < 1 or any([size < 1 for size in x.shape]):
         return None
     x_min = x.min()
     x_max = x.max()
-    return ((x - x_min) / (x_max - x_min)).reshape((-1, x.shape[0]))
+    return (x - x_min) / (x_max - x_min)
