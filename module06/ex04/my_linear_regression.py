@@ -112,15 +112,16 @@ class MyLinearRegression:
             return None
         return np.square(y_hat - y)
 
-    def loss_(self, y: np.ndarray, y_hat: np.ndarray) -> float:
+    @staticmethod
+    def mse_(y: np.ndarray, y_hat: np.ndarray) -> float:
         """
-        Computes the half mean squared error of two non-empty numpy.array, without any for loop.
+        Computes the mean squared error of two non-empty numpy.array, without any for loop.
         The two arrays must have the same dimensions.
         Args:
             y: has to be an numpy.array, a vector.
             y_hat: has to be an numpy.array, a vector.
         Returns:
-            The half mean squared error of the two vectors as a float.
+            The mean squared error of the two vectors as a float.
             None if y or y_hat are empty numpy.array.
             None if y and y_hat does not share the same dimensions.
             None if y or y_hat is not of the expected type.
@@ -133,4 +134,21 @@ class MyLinearRegression:
             return None
         if len(y.shape) != 2 or y.shape[0] < 1 or y.shape != y_hat.shape:
             return None
-        return (1 / (2 * y.shape[0])) * np.sum(np.square(y_hat - y))
+        return (1 / y.shape[0]) * np.sum(np.square(y_hat - y))
+
+    def loss_(self, y: np.ndarray, y_hat: np.ndarray) -> float:
+        """
+        Computes the mean squared error of two non-empty numpy.array, without any for loop.
+        The two arrays must have the same dimensions.
+        Args:
+            y: has to be an numpy.array, a vector.
+            y_hat: has to be an numpy.array, a vector.
+        Returns:
+            The mean squared error of the two vectors as a float.
+            None if y or y_hat are empty numpy.array.
+            None if y and y_hat does not share the same dimensions.
+            None if y or y_hat is not of the expected type.
+        Raises:
+            This function should not raise any Exception.
+        """
+        return MyLinearRegression.mse_(y, y_hat)
