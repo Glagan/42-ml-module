@@ -20,18 +20,17 @@ class MyLinearRegression:
         self.alpha = alpha
         self.max_iter = max_iter
 
-    def gradient_(self, x: np.ndarray, y: np.ndarray, theta: np.ndarray) -> np.ndarray:
+    def gradient_(self, x: np.ndarray, y: np.ndarray) -> np.ndarray:
         """
         Computes a gradient vector from three non-empty numpy.ndarray, without any for loop. The three arrays must have compatible dimensions.
         Args:
             x: has to be a numpy.ndarray, a matrix of dimension m * 2.
             y: has to be a numpy.ndarray, a vector of dimension m * 1.
-            theta: has to be a numpy.ndarray, a 2 * 1 vector.
         Returns:
             The gradient as a numpy.array, a vector of shape 2 * 1.
-            None if x, y, or theta is an empty numpy.array.
+            None if x or y is an empty numpy.array.
             None if x, y and theta do not have compatible shapes.
-            None if x, y or theta is not of the expected type.
+            None if x or y is not of the expected type.
         Raises:
             This function should not raise any Exception.
         """
@@ -39,10 +38,8 @@ class MyLinearRegression:
             return None
         if not isinstance(y, np.ndarray) or len(y.shape) != 2 or y.shape[0] != x.shape[0] or y.shape[1] != 1:
             return None
-        if not isinstance(theta, np.ndarray) or theta.shape != (2, 1):
-            return None
         m1 = 1 / x.shape[0]
-        return (m1 * (x.T.dot(x.dot(theta) - y)))
+        return (m1 * (x.T.dot(x.dot(self.thetas) - y)))
 
     def fit_(self, x: np.ndarray, y: np.ndarray) -> np.ndarray:
         """
@@ -68,9 +65,7 @@ class MyLinearRegression:
             return None
         x = np.hstack((np.ones((x.shape[0], 1)), x))  # Add intercept
         for _ in range(self.max_iter):
-            use_thetas = self.thetas
-            self.thetas = (use_thetas - (self.alpha *
-                           self.gradient_(x, y, use_thetas)))
+            self.thetas = self.thetas - (self.alpha * self.gradient_(x, y))
         return self.thetas
 
     def predict_(self, x: np.ndarray) -> np.ndarray:
@@ -133,4 +128,4 @@ class MyLinearRegression:
             return None
         if len(y.shape) != 2 or y.shape[0] < 1 or y.shape != y_hat.shape:
             return None
-        return (1 / (2 * y.shape[0])) * np.sum(np.square(y_hat - y))
+        return ((1 / (2 * y.shape[0])) * (y_hat - y).T.dot(y_hat - y)).item()
