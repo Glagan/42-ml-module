@@ -24,8 +24,9 @@ def reg_log_loss_(y: np.ndarray, y_hat: np.ndarray, theta: np.ndarray, lambda_: 
         return None
     if len(theta.shape) != 2 or theta.shape[0] < 1 or theta.shape[1] != 1:
         return None
+    eps = 1e-15
     m = y.shape[0]
     one = np.ones(y.shape[0]).reshape((-1, 1))
     theta_0 = theta + 0  # copy
     theta_0[0][0] = 0
-    return float((- (1 / m) * (y.T.dot(np.log(y_hat)) + (one - y).T.dot(one - y_hat))) + ((lambda_ / (2 * m)) * theta_0.T.dot(theta_0)).item())
+    return float((- (1 / m) * (y.T.dot(np.log(y_hat + eps)) + (one - y).T.dot(np.log(one - y_hat + eps)))) + ((lambda_ / (2 * m)) * theta_0.T.dot(theta_0)).item())

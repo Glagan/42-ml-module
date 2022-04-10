@@ -24,5 +24,4 @@ def vec_log_loss_(y: np.ndarray, y_hat: np.ndarray, eps: float = 1e-15) -> float
         return None
     one = np.ones(y.shape[0]).reshape((-1, 1))
     m1 = 1 / y.shape[0]
-    # TODO + eps ?
-    return - m1 * np.sum(y * np.log(y_hat) + ((one - y) * np.log(one - y_hat)))
+    return float((- m1 * (y.T.dot(np.log(y_hat + eps)) + (one - y).T.dot(np.log(one - y_hat + eps)))).item())

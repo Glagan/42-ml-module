@@ -28,6 +28,5 @@ def log_loss_(y: np.ndarray, y_hat: np.ndarray, eps: float = 1e-15) -> float:
     for i in range(y.shape[0]):
         y_i = y[i][0]
         y_hat_i = y_hat[i][0]
-        # TODO + eps ?
-        loss_sum = loss_sum + (y_i * math.log(y_hat_i)) + ((1 - y_i) * math.log(1 - y_hat_i))
+        loss_sum = loss_sum + (y_i * math.log(y_hat_i + eps)) + ((1 - y_i) * math.log(1 - y_hat_i + eps))
     return - m1 * loss_sum
