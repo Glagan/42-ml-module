@@ -83,6 +83,16 @@ def vec_reg_logistic_grad(x: np.ndarray, y: np.ndarray, theta: np.ndarray, lambd
     Raises:
         This function should not raise any Exception.
     """
+    if not isinstance(y, np.ndarray) or not isinstance(x, np.ndarray) or not isinstance(theta, np.ndarray):
+        return None
+    if not isinstance(lambda_, int) and not isinstance(lambda_, float):
+        return None
+    if len(y.shape) < 2 or y.shape[0] < 1 or y.shape[1] < 1:
+        return None
+    if len(x.shape) < 2 or x.shape[0] != y.shape[0] or x.shape[1] < 1:
+        return None
+    if len(theta.shape) != 2 or theta.shape[0] != x.shape[1] + 1 or theta.shape[1] != 1:
+        return None
     m1 = 1 / x.shape[0]
     theta_0 = theta + 0  # copy
     theta_0[0][0] = 0
