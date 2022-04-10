@@ -14,7 +14,7 @@ print(mylr.predict_(X))
 
 # Example 1:
 Y_hat = mylr.predict_(X)
-print(mylr.cost_(Y, Y_hat))
+print(mylr.loss_(Y, Y_hat))
 # Output:
 # 11.513157421577004
 
@@ -37,6 +37,6 @@ print(mylr.predict_(X))
 
 # Example 4:
 Y_hat = mylr.predict_(X)
-print(mylr.cost_(Y, Y_hat))
+print(mylr.loss_(Y, Y_hat))
 # Output:
 # 0.5432466580663214

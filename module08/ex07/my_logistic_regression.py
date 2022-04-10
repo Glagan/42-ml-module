@@ -39,7 +39,7 @@ class MyLogisticRegression:
         y_hat = x_int.dot(self.theta)
         return self.sigmoid_(y_hat)
 
-    def cost_elem_(self, y: np.ndarray, y_hat: np.ndarray) -> np.ndarray:
+    def loss_elem_(self, y: np.ndarray, y_hat: np.ndarray) -> np.ndarray:
         """ 
         Calculates all the elements loss.
         Args:
@@ -60,7 +60,7 @@ class MyLogisticRegression:
         one = np.ones(y.shape[0]).reshape((-1, 1))
         return (y * np.log(y_hat + eps)) + ((one - y) * np.log(one - y_hat + eps))
 
-    def cost_(self, y: np.ndarray, y_hat: np.ndarray) -> float:
+    def loss_(self, y: np.ndarray, y_hat: np.ndarray) -> float:
         """
         Compute the logistic loss value.
         Args:
