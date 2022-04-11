@@ -78,6 +78,8 @@ def precision_score_(y: np.ndarray, y_hat: np.ndarray, pos_label=1) -> float:
     if isinstance(pos_label, int) and pos_label < 0:
         return None
     tp, tn, fp, fn = confusion_matrix_(y, y_hat, pos_label)
+    if tp + fp == 0:
+        return 0.0
     return (tp) / (tp + fp)
 
 
@@ -105,6 +107,8 @@ def recall_score_(y: np.ndarray, y_hat: np.ndarray, pos_label=1) -> float:
     if isinstance(pos_label, int) and pos_label < 0:
         return None
     tp, tn, fp, fn = confusion_matrix_(y, y_hat, pos_label)
+    if tp + fn == 0:
+        return 0.0
     return (tp) / (tp + fn)
 
 
@@ -133,6 +137,8 @@ def f1_score_(y: np.ndarray, y_hat: np.ndarray, pos_label=1) -> float:
         return None
     precision = precision_score_(y, y_hat, pos_label)
     recall = recall_score_(y, y_hat, pos_label)
+    if precision is None or recall is None:
+        return 0.0
     if precision + recall == 0:
         return 0.0
     return (2 * precision * recall) / (precision + recall)
