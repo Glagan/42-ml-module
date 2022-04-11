@@ -1,7 +1,6 @@
-from itertools import combinations
-from matplotlib import pyplot as plt
 import numpy as np
 import pandas as pd
+import base64
 from my_logistic_regression import MyLogisticRegression
 from polynomial_model_extended import add_polynomial_features
 from scores import *
@@ -48,7 +47,7 @@ if __name__ == '__main__':
     # Lambdas to use
     lambdas = [0.0, 0.2, 0.4, 0.6, 0.8, 1.0]
     alpha = 0.0005
-    max_iter = 100000
+    max_iter = 1000
 
     # Train each models with a polynomial of 3
     if use_polynomial:
@@ -85,10 +84,14 @@ if __name__ == '__main__':
     # Save models
     columns = ["lambda_", "alpha", "max_iter", "0", "1", "2", "3"]
     save = pd.DataFrame(
-        [[onevsall_models[0].lambda_, alpha, max_iter, *[model.theta for model in onevsall_models]] for onevsall_models in models],
+        [[onevsall_models[0].lambda_, alpha, max_iter, *[
+            base64.b64encode(model.theta).decode("ascii") for model in onevsall_models
+        ]] for onevsall_models in models],
         columns=columns)
+    initial_theta_str = initial_theta()
+    initial_theta_str = base64.b64encode(initial_theta_str).decode("ascii")
     best_model = pd.DataFrame(
-        [[1.0, alpha, max_iter, initial_theta(), initial_theta(), initial_theta(), initial_theta()]],
+        [[1.0, alpha, max_iter, initial_theta_str, initial_theta_str, initial_theta_str, initial_theta_str]],
         columns=columns)
     save = pd.concat((best_model, save))
     save.to_csv('models.csv')
