@@ -51,7 +51,7 @@ for model in models:
     x = add_polynomial_features(xMicrograms, polynomial)
     predictions = model.predict_(x)
     plt.scatter(xMicrograms, predictions,
-                label=f"Predictions for p={polynomial}",
+                # label=f"Predictions for p={polynomial}",
                 color=cmap(polynomial),
                 alpha=0.75)
     x = add_polynomial_features(continuous_x, polynomial)

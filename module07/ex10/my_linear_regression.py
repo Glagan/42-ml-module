@@ -41,7 +41,7 @@ class MyLinearRegression:
             x = np.hstack((np.ones((x.shape[0], 1)), x))
         return m1 * x.T.dot(x.dot(self.theta) - y)
 
-    def fit_(self, x: np.ndarray, y: np.ndarray) -> np.ndarray:
+    def fit_(self, x: np.ndarray, y: np.ndarray, check_loss: bool = False) -> np.ndarray:
         """
         Fits the model to the training dataset contained in x and y.
         Args:
@@ -62,10 +62,13 @@ class MyLinearRegression:
             return None
         if x.shape[1] + 1 != self.theta.shape[0]:
             return None
+        loss = []
         x_int = np.hstack((np.ones((x.shape[0], 1)), x))
         for _ in range(self.max_iter):
             self.theta = self.theta - (self.alpha * self.gradient(x_int, y))
-        return self.theta
+            if check_loss:
+                loss.append(self.loss_(y, self.predict_(x_int)))
+        return self.theta, loss
 
     def predict_(self, x: np.ndarray) -> np.ndarray:
         """
@@ -79,10 +82,11 @@ class MyLinearRegression:
         """
         if not isinstance(x, np.ndarray):
             return None
-        if len(x.shape) != 2 or x.shape[1] + 1 != self.theta.shape[0]:
+        if len(x.shape) != 2 or (x.shape[1] != self.theta.shape[0] and x.shape[1] + 1 != self.theta.shape[0]):
             return None
-        x_int = np.hstack((np.ones((x.shape[0], 1)), x))
-        return x_int.dot(self.theta)
+        if x.shape[1] != self.theta.shape[0]:
+            x = np.hstack((np.ones((x.shape[0], 1)), x))
+        return x.dot(self.theta)
 
     def loss_elem_(self, y: np.ndarray, y_hat: np.ndarray) -> np.ndarray:
         """ 
