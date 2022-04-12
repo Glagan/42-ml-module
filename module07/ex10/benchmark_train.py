@@ -11,7 +11,8 @@ try:
 except BaseException as error:
     print(f"Failed to read dataset: {error}")
     exit(1)
-x = df[['weight', 'prod_distance', 'time_delivery']].to_numpy().reshape(-1, 3)
+features = ['weight', 'prod_distance', 'time_delivery']
+x = df[features].to_numpy().reshape(-1, 3)
 y = df['target'].to_numpy().reshape(-1, 1)
 
 # Split dataset
@@ -23,23 +24,34 @@ thetas = [
     np.array([[1.], [1.], [2.], [3.], [4.]]).reshape(-1, 1),
     np.array([[1.], [1.], [2.], [3.], [4.], [5.]]).reshape(-1, 1),
     np.array([[1.], [1.], [2.], [3.], [4.], [5.], [6.]]).reshape(-1, 1),
+    # Train more polynomial for testing only -- they are not saved
+    np.array([[1.], [1.], [2.], [3.], [4.], [5.], [6.], [7.0]]).reshape(-1, 1),
+    np.array([[1.], [1.], [2.], [3.], [4.], [5.], [6.], [7.0], [8.0]]).reshape(-1, 1),
 ]
 max_polynomial = len(thetas)
 
 # Train models
-max_iter = 10000
+alpha = 0.005
+max_iter = 100000
 models = []
 models_loss = []
 losses = []
 for i in range(0, max_polynomial):
     print(f"[Polynomial {i + 1}] Training...")
     current_loss = []
-    model = MyLR(thetas[i], alpha=0.000000000000001, max_iter=1)
+    model = MyLR(thetas[i], alpha=alpha, max_iter=1)
+    # Normalize dataset after polynomials
     x = add_polynomial_features(xTrain, i + 1)
+    norm_mean, norm_std = x.mean(axis=0), x.std(axis=0)
+    x = (x - norm_mean) / norm_std
+    # Fit model and keep track of the loss
     for j in range(max_iter):
         model.fit_(x, yTrain)
         current_loss.append(model.loss_(yTrain, model.predict_(x)))
+    # Calculate loss against test set
+    # Test set is normalized using the same values as the training set
     x_test = add_polynomial_features(xTest, i + 1)
+    x_test = (x_test - norm_mean) / norm_std
     loss = model.loss_(yTest, model.predict_(x_test))
     print(f"[Polynomial {i + 1}] Test loss: {loss}")
     losses.append(loss)
@@ -47,7 +59,12 @@ for i in range(0, max_polynomial):
     models_loss.append(current_loss)
 
 # Save trained models
-np.savez("models.npz", *[model.theta for model in models])
+# -- with the alpha and iterations
+# -- and the initial thetas for the best model
+np.savez("models.npz",
+         np.array([alpha, max_iter, 3]),
+         np.array([[1.], [1.], [2.], [3.], [4.], [5.]]),  # The third model is the best
+         *[model.theta for model in models[:4]])
 
 # Show loss over time for the trained models on the test set
 cmap = plt.cm.get_cmap('jet', max_polynomial + 1)
@@ -57,6 +74,3 @@ plt.xlabel("Epoch")
 plt.ylabel("Loss")
 plt.legend()
 plt.show()
-
-# Show test loss per models
-# plt.plot(list(range(1, max_polynomial)), loss, c=cmap(index + 1), label=f"Polynomial {index + 1}")

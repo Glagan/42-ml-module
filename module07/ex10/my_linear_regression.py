@@ -6,11 +6,10 @@ class MyLinearRegression:
         if not isinstance(theta, np.ndarray) or len(theta.shape) != 2 or theta.shape[1] != 1:
             raise ValueError(
                 'theta should be an array of at size (n,1) with n > 1')
-        if not isinstance(alpha, float) or not isinstance(max_iter, int):
-            raise TypeError(
-                'alpha should be a positive float and max_iter should be a positive number')
-        if alpha < 0 or max_iter < 1:
-            raise ValueError
+        if (not isinstance(alpha, float) and not isinstance(alpha, int)) or alpha < 0:
+            raise TypeError('alpha should be a positive number')
+        if (not isinstance(max_iter, float) and not isinstance(max_iter, int)) or max_iter < 1:
+            raise TypeError('max_iter should be a positive number')
         self.theta = theta
         self.alpha = alpha
         self.max_iter = max_iter
