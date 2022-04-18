@@ -33,7 +33,7 @@ class MyLogisticRegression:
             return None
         if len(x.shape) != 2:
             return None
-        if x.shape[0] < 1 or x.shape[1] + 1 != self.theta.shape[0]:
+        if x.shape[0] < 1 or x.shape[1] < 1 or x.shape[1] + 1 != self.theta.shape[0]:
             return None
         x_int = np.hstack((np.ones((x.shape[0], 1)), x))
         y_hat = x_int.dot(self.theta)
