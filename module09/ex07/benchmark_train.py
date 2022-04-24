@@ -3,7 +3,7 @@ from turtle import fd
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
-from polynomial_model import add_polynomial_features
+from polynomial_model_extended import add_polynomial_features
 from ridge import MyRidge
 from data_spliter import data_spliter
 
