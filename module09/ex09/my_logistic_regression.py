@@ -118,11 +118,12 @@ class MyLogisticRegression:
         eps = 1e-15
         m = y.shape[0]
         one = np.ones(y.shape[0]).reshape((-1, 1))
+        m1 = 1 / y.shape[0]
         if self.penality == 'l2':
             theta_0 = self.theta + 0  # copy
             theta_0[0][0] = 0
-            return float(((- (1 / m) * (y.T.dot(np.log(y_hat + eps)) + (one - y).T.dot(np.log(one - y_hat + eps)))) + ((self.lambda_ / (2 * m)) * theta_0.T.dot(theta_0))).item())
-        return float(((- (1 / m) * (y.T.dot(np.log(y_hat + eps)) + (one - y).T.dot(np.log(one - y_hat + eps))))).item())
+            return float(((- m1 * (y.T.dot(np.log(y_hat + eps)) + (one - y).T.dot(np.log(one - y_hat + eps)))) + ((self.lambda_ / (2 * m)) * theta_0.T.dot(theta_0))).item())
+        return float(((- m1 * (y.T.dot(np.log(y_hat + eps)) + (one - y).T.dot(np.log(one - y_hat + eps))))).item())
 
     def reg_log_gradient(self, x: np.ndarray, y: np.ndarray) -> np.ndarray:
         """
@@ -150,7 +151,7 @@ class MyLogisticRegression:
             return None
         if self.theta.shape[1] != 1:
             return None
-        m1 = 1 / (2 * x.shape[0])
+        m1 = 1 / x.shape[0]
         theta_0 = self.theta + 0  # copy
         theta_0[0][0] = 0
         if x.shape[1] != self.theta.shape[0]:
@@ -179,7 +180,7 @@ class MyLogisticRegression:
             return None
         if x.shape[1] != self.theta.shape[0] and x.shape[1] + 1 != self.theta.shape[0]:
             return None
-        m1 = 1 / (2 * x.shape[0])
+        m1 = 1 / x.shape[0]
         if x.shape[1] != self.theta.shape[0]:
             x = np.hstack((np.ones((x.shape[0], 1)), x))  # Add intercept
         return m1 * x.T.dot(self.sigmoid_(x.dot(self.theta)) - y)
@@ -206,9 +207,10 @@ class MyLogisticRegression:
         if x.shape[1] + 1 != self.theta.shape[0]:
             return None
         x_int = np.hstack((np.ones((x.shape[0], 1)), x))
-        for _ in range(self.max_iter):
-            if self.penality == 'l2':
+        if self.penality == 'l2':
+            for _ in range(self.max_iter):
                 self.theta = self.theta - (self.alpha * self.reg_log_gradient(x_int, y))
-            else:
+        else:
+            for _ in range(self.max_iter):
                 self.theta = self.theta - (self.alpha * self.log_gradient(x_int, y))
         return self.theta

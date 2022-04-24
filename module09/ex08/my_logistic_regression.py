@@ -206,9 +206,10 @@ class MyLogisticRegression:
         if x.shape[1] + 1 != self.theta.shape[0]:
             return None
         x_int = np.hstack((np.ones((x.shape[0], 1)), x))
-        for _ in range(self.max_iter):
-            if self.penality == 'l2':
+        if self.penality == 'l2':
+            for _ in range(self.max_iter):
                 self.theta = self.theta - (self.alpha * self.reg_log_gradient(x_int, y))
-            else:
+        else:
+            for _ in range(self.max_iter):
                 self.theta = self.theta - (self.alpha * self.log_gradient(x_int, y))
         return self.theta
