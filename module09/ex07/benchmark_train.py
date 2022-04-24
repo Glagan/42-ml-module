@@ -17,8 +17,15 @@ features = ['weight', 'prod_distance', 'time_delivery']
 x = df[features].to_numpy().reshape(-1, 3)
 y = df['target'].to_numpy().reshape(-1, 1)
 
-# Split dataset
-xTrain, xTest, yTrain, yTest = data_spliter(x, y, 0.8)
+# Split dataset in 3: train, cross-validation and test
+split_size = [int(.8 * len(df)), int(.9 * len(df))]
+train, validate, test = np.split(df.sample(frac=1), split_size)
+xTrain = train[features].to_numpy().reshape((-1, 3))
+yTrain = train['target'].to_numpy().reshape((-1, 1))
+xValidation = validate[features].to_numpy().reshape((-1, 3))
+yValidation = validate['target'].to_numpy().reshape((-1, 1))
+xTest = test[features].to_numpy().reshape((-1, 3))
+yTest = test['target'].to_numpy().reshape((-1, 1))
 
 # Base Theta
 thetas = [
@@ -46,14 +53,22 @@ for i in range(0, max_polynomial):
         x = (x - norm_mean) / norm_std
         _, loss = model.fit_(x, yTrain, check_loss=True)
         models_loss.append(loss)
-        # Calculate loss against test set
-        # Test set is normalized using the same values as the training set
-        x_test = add_polynomial_features(xTest, i + 1)
-        x_test = (x_test - norm_mean) / norm_std
-        loss = model.loss_(yTest, model.predict_(x_test))
-        print(f"[Polynomial {i + 1} / λ {lambda_}] Test loss: {loss}")
+        # Calculate loss against validation set
+        # Validation set is normalized using the same values as the training set
+        x_validate = add_polynomial_features(xValidation, i + 1)
+        x_validate = (x_validate - norm_mean) / norm_std
+        loss = model.loss_(yValidation, model.predict_(x_validate))
+        print(f"[Polynomial {i + 1} / λ {lambda_}] Validation loss: {loss}")
         losses.append(loss)
         models.append(model)
+
+# Calculate loss against test set for the best model
+# Test set is normalized using the same values as the training set
+best_model = models[(3 * 6) + 3]
+x_test = add_polynomial_features(xTest, i + 1)
+x_test = (x_test - norm_mean) / norm_std
+loss = model.loss_(yTest, model.predict_(x_test))
+print(f"Best model test loss: {loss}")
 
 # Save trained models
 # -- with the alpha and iterations
