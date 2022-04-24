@@ -135,7 +135,7 @@ class MyRidge(MyLinearRegression):
         y_hat = x.dot(self.thetas)
         return m1 * (x.T.dot(y_hat - y) + (self.lambda_ * theta_0))
 
-    def fit_(self, x: np.ndarray, y: np.ndarray) -> np.ndarray:
+    def fit_(self, x: np.ndarray, y: np.ndarray, check_loss: bool = False) -> np.ndarray:
         """
         Fits the model to the training dataset contained in x and y.
         Args:
@@ -156,7 +156,10 @@ class MyRidge(MyLinearRegression):
             return None
         if x.shape[1] + 1 != self.thetas.shape[0]:
             return None
+        loss = []
         x_int = np.hstack((np.ones((x.shape[0], 1)), x))
         for _ in range(self.max_iter):
             self.thetas = self.thetas - (self.alpha * self.gradient_(x_int, y))
-        return self.thetas
+            if check_loss:
+                loss.append(self.loss_(y, self.predict_(x_int)))
+        return self.thetas, loss

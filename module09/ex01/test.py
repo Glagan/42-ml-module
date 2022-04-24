@@ -1,7 +1,13 @@
 from l2_reg import *
 
-
 x = np.array([2, 14, -13, 5, 12, 4, -19]).reshape((-1, 1))
+# array([[  2],
+#        [ 14],
+#        [-13],
+#        [  5],
+#        [ 12],
+#        [  4],
+#        [-19]])
 
 # Example 1:
 print(iterative_l2(x))
@@ -14,6 +20,10 @@ print(l2(x))
 # 911.0
 
 y = np.array([3, 0.5, -6]).reshape((-1, 1))
+# array([[ 3. ],
+#        [ 0.5],
+#        [-6. ]])
+
 # Example 3:
 print(iterative_l2(y))
 # Output:

@@ -2,6 +2,11 @@ import numpy as np
 from polynomial_model_extended import add_polynomial_features
 
 x = np.arange(1, 11).reshape(5, 2)
+# array([[ 1,  2],
+#        [ 3,  4],
+#        [ 5,  6],
+#        [ 7,  8],
+#        [ 9, 10]])
 
 # Example 1:
 print(add_polynomial_features(x, 3))
@@ -23,6 +28,16 @@ print(add_polynomial_features(x, 4))
 
 # Example 3:
 print(add_polynomial_features(x, 1))
+# [[ 1  2]
+#  [ 3  4]
+#  [ 5  6]
+#  [ 7  8]
+#  [ 9 10]]
 
 # Example 4:
 print(add_polynomial_features(x, 2))
+# [[  1   2   1   4]
+#  [  3   4   9  16]
+#  [  5   6  25  36]
+#  [  7   8  49  64]
+#  [  9  10  81 100]]

@@ -26,5 +26,5 @@ def reg_loss_(y: np.ndarray, y_hat: np.ndarray, theta: np.ndarray, lambda_: floa
         return None
     theta_0 = theta + 0  # copy
     theta_0[0][0] = 0
-    diff = (y_hat - y).T.dot(y_hat - y)  # (y_hat − y) * (y_hat − y)
+    diff = (y_hat - y).T.dot(y_hat - y)  # (y_hat − y) . (y_hat − y)
     return float(((1 / (2 * y.shape[0])) * (diff + lambda_ * theta_0.T.dot(theta_0))).item())
