@@ -4,8 +4,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from my_logistic_regression import MyLogisticRegression
-# from polynomial_model_extended import add_polynomial_features
-from polynomial_model import add_polynomial_features
+from polynomial_model_extended import add_polynomial_features
 from scores import *
 from data_spliter import data_spliter
 
@@ -64,7 +63,7 @@ try:
 
     f1_scores = []
     # Calculate f1 score for the best model
-    multiclass_predictions = np.array([model.predict_(xTest_poly) for model in best_model]).reshape(-1, 4)
+    multiclass_predictions = np.array([model.predict_(xTest_poly) for model in best_model]).T.reshape(-1, 4)
     yTest_hat = np.argmax(multiclass_predictions, axis=1).reshape(-1, 1)
     best_model_f1_score = f1_score_(yTest, yTest_hat)
     print(f"Best model f1 score: {best_model_f1_score}")
@@ -72,7 +71,7 @@ try:
 
     # Calculate f1 score for all other models
     for trained_model in trained_models:
-        multiclass_predictions = np.array([model.predict_(xTest_poly) for model in trained_model]).reshape(-1, 4)
+        multiclass_predictions = np.array([model.predict_(xTest_poly) for model in trained_model]).T.reshape(-1, 4)
         yTest_hat = np.argmax(multiclass_predictions, axis=1).reshape(-1, 1)
         model_f1_score = f1_score_(yTest, yTest_hat)
         f1_scores.append(model_f1_score)
@@ -85,7 +84,7 @@ try:
     plt.show()
 
     # Predict the whole dataset for the plot
-    multiclass_predictions = np.array([model.predict_(xPoly) for model in best_model]).reshape(-1, 4)
+    multiclass_predictions = np.array([model.predict_(xPoly) for model in best_model]).T.reshape(-1, 4)
     y_hat = np.argmax(multiclass_predictions, axis=1).reshape(-1, 1)
     # Show one scatter plot for each of X, Y = features and color = prediction
     features_pair = combinations(features, 2)

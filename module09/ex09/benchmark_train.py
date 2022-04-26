@@ -2,14 +2,12 @@ import pickle
 import numpy as np
 import pandas as pd
 from my_logistic_regression import MyLogisticRegression
-# from polynomial_model_extended import add_polynomial_features
-from polynomial_model import add_polynomial_features
+from polynomial_model_extended import add_polynomial_features
 from scores import *
 
 
 def initial_theta():
-    # return np.array([[1.], [1.], [1.], [1.], [1.], [1.], [1.], [1.], [1.], [1.]])
-    return np.array([[1.], [1.], [1.], [1.], [1.], [1.]])
+    return np.array([[1.], [1.], [1.], [1.], [1.], [1.], [1.], [1.], [1.], [1.]])
 
 
 # Open datasets
@@ -63,7 +61,7 @@ for lambda_ in lambdas:
         # print(f"f1 score: {f1_score_(yValidation_one, yValidation_hat, pos_label=i)}")
         current_models.append(model)
     # Predict the values for the whole set with this lambda
-    multiclass_predictions = np.array([model.predict_(xTest_poly) for model in current_models]).reshape(-1, 4)
+    multiclass_predictions = np.array([model.predict_(xTest_poly) for model in current_models]).T.reshape(-1, 4)
     yTest_hat = np.argmax(multiclass_predictions, axis=1).reshape(-1, 1)
     # Show correctly predicted values
     correct_predictions = np.sum(yTest_hat == yTest)
