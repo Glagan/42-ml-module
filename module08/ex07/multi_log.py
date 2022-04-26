@@ -43,13 +43,12 @@ if __name__ == '__main__':
         model_yTest[model_yTest != 1] = 0
         predictions = np.round(model.predict_(xTest))
         correct_predictions = np.sum(predictions == model_yTest)
-        print(
-            f"[Test]  Correct predicted values: {correct_predictions} / {model_yTest.shape[0]}  ({(correct_predictions / model_yTest.shape[0]) * 100:.2f}%)")
+        print(f"[Test]  Correct predicted values: {correct_predictions} / {model_yTest.shape[0]}  ({(correct_predictions / model_yTest.shape[0]) * 100:.2f}%)")
 
     # Predict the whole dataset for each models 4 * [len, 1]
     # -- and select the highest value and assign the planet to it
-    multiclass_predictions = np.array([model.predict_(x) for model in models])
-    predictions = np.argmax(multiclass_predictions, axis=0)
+    multiclass_predictions = np.array([model.predict_(x) for model in models]).T.reshape(-1, 4)
+    predictions = np.argmax(multiclass_predictions,  axis=1).reshape(-1, 1)
     correct_predictions = np.sum(predictions == y)
     print(f"[Overall] Correct predicted values: {correct_predictions} / {y.shape[0]} ({(correct_predictions / y.shape[0]) * 100:.2f}%)")
 
